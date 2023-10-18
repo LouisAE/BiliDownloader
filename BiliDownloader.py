@@ -107,6 +107,27 @@ class BiliDownloader(QObject):
         self.ui.downloadButton.setEnabled(True)
         self.ui.downloadSaveAsButton.setEnabled(True)
 
+    def download_video(self, save_path):
+        try:
+            headers = self.__http_headers
+            response = requests.get(self.link, headers=headers, stream=True)
+            response.raise_for_status()
+
+            total_size = int(response.headers.get("Content-Length", 0))
+            downloaded_size = 0
+
+            with open(save_path, 'wb') as file:
+                for chunk in response.iter_content(chunk_size=1024):
+                    if chunk:
+                        file.write(chunk)
+                        downloaded_size += len(chunk)
+                        # 计算下载进度并显示
+                        progress = (downloaded_size / total_size) * 100
+                        print(f"已下载 {progress:.2f}%")
+
+            print("下载完成")
+        except requests.exceptions.RequestException as e:
+            print(f"下载出错: {e}", "error")
 #slots:
     def on_showVideoInfoButton_Clicked(self):
         if not self.__setVideo():
