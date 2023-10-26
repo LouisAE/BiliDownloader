@@ -1,4 +1,3 @@
-from tkinter import SEL
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QWidget, QFileDialog
 from PyQt5.QtGui import QRegExpValidator, QValidator, QPixmap
 from PyQt5.QtCore import QRegExp, pyqtSignal, QObject
